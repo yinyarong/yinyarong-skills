@@ -1,0 +1,47 @@
+{
+  "name": "yinyarong-skills",
+  "version": "1.0.0",
+  "description": "印亚荣风格公众号文章生成技能集：标题生成 + 文章撰写",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "yinyarong-skills": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "mcp",
+    "skills",
+    "wechat",
+    "article",
+    "title-generator",
+    "yinyarong"
+  ],
+  "author": "yinyarong",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.17",
+    "typescript": "^5.7.3"
+  },
+  "mcp": {
+    "name": "yinyarong-skills",
+    "version": "1.0.0",
+    "skills": [
+      {
+        "name": "yinyarong_title",
+        "description": "生成公众号爆款标题"
+      },
+      {
+        "name": "yinyarong_article",
+        "description": "撰写印亚荣风格公众号文章"
+      }
+    ]
+  }
+}
