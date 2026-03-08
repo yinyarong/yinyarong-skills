@@ -42,7 +42,9 @@ export async function callAnthropic(
     throw new Error("ANTHROPIC_API_KEY is not set");
   }
 
-  const url = "https://api.anthropic.com/v1/messages";
+  // 支持自定义 BASE_URL（如智谱AI）
+  const baseURL = config.baseURL || "https://api.anthropic.com";
+  const url = `${baseURL}/v1/messages`;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

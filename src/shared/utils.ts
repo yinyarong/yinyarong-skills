@@ -2,65 +2,20 @@
  * 共享工具函数
  */
 
-/**
- * AI 服务配置
- */
-export interface AIServiceConfig {
-  provider: "anthropic" | "openai" | "custom";
-  apiKey?: string;
-  baseURL?: string;
-  model?: string;
-}
+// 导出配置相关的内容
+export {
+  type AIServiceConfig,
+  setAIConfig,
+  getAIConfig,
+  hasApiKey,
+  getConfigSource
+} from "./config.js";
 
-/**
- * 从环境变量读取配置
- */
-function loadConfigFromEnv(): AIServiceConfig {
-  const config: AIServiceConfig = {
-    provider: (process.env.AI_PROVIDER as AIServiceConfig["provider"]) || "anthropic"
-  };
-
-  // Anthropic 配置
-  if (config.provider === "anthropic") {
-    config.apiKey = process.env.ANTHROPIC_API_KEY;
-    config.model = process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-20241022";
-  }
-
-  // OpenAI 配置
-  if (config.provider === "openai") {
-    config.apiKey = process.env.OPENAI_API_KEY;
-    config.model = process.env.OPENAI_MODEL || "gpt-4o";
-  }
-
-  return config;
-}
-
-/**
- * 当前 AI 服务配置（从环境变量初始化）
- */
-let aiConfig: AIServiceConfig = loadConfigFromEnv();
-
-/**
- * 设置 AI 服务配置
- */
-export function setAIConfig(config: Partial<AIServiceConfig>): void {
-  aiConfig = { ...aiConfig, ...config };
-}
-
-/**
- * 获取 AI 服务配置
- */
-export function getAIConfig(): AIServiceConfig {
-  return { ...aiConfig };
-}
-
-/**
- * 解析 JSON 响应
- * 注意：callAIService 已移至 ai.ts
- */
+// 导出 AI 服务调用
 export { callAIService } from "./ai.js";
 
 /**
+ * 解析 JSON 响应
  */
 export function parseJSONResponse<T>(text: string): T | null {
   try {

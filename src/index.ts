@@ -12,6 +12,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { titleSkill } from "./skills/title/index.js";
 import { articleSkill } from "./skills/article/index.js";
+import { hasApiKey, getConfigSource, getAIConfig } from "./shared/utils.js";
 
 /**
  * 创建 MCP Server
@@ -122,20 +123,24 @@ function createServer(): Server {
  * 启动 Server
  */
 async function main() {
+  // 输出配置状态到 stderr（不影响 MCP 通信）
+  console.error("yinyarong-skills MCP Server starting...");
+  console.error(`API 配置来源: ${getConfigSource()}`);
+  console.error(`AI Provider: ${getAIConfig().provider}`);
+  console.error(`已配置 API Key: ${hasApiKey() ? "是" : "否"}`);
+
+  if (!hasApiKey()) {
+    console.error("⚠️  警告: 未检测到 API Key");
+    console.error("   Claude Code 会自动设置 ANTHROPIC_AUTH_TOKEN");
+    console.error("   如需使用 OpenAI，请设置 OPENAI_API_KEY 环境变量");
+  }
+
   const server = createServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
-  // stderr 用于日志输出（不影响 MCP 通信）
-  console.stderr = process.stderr;
-  console.error("yinyarong-skills MCP Server started");
+  console.error("yinyarong-skills MCP Server started ✓");
 }
 
-// 启动服务
-main().catch(error => {
-  console.error("Failed to start server:", error);
-  process.exit(1);
-});
-
-// 导出供测试使用
-export { createServer, titleSkill, articleSkill };
+// 导出供 CLI 和测试使用
+export { createServer, titleSkill, articleSkill, main };

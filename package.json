@@ -5,24 +5,47 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "yinyarong-skills": "dist/index.js"
+    "yinyarong-skills": "src/cli.js"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src/cli.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
     "skills",
     "wechat",
     "article",
     "title-generator",
+    "chinese",
+    "writing",
+    "content-generation",
     "yinyarong"
   ],
   "author": "yinyarong",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/yinyarong-skills.git"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4"
   },

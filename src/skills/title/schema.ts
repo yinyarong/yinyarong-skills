@@ -94,7 +94,7 @@ export class TitleSkill implements Skill {
   /**
    * 解析 AI 响应
    */
-  private parseResponse(responseText: string) {
+  private parseResponse(responseText: string, count: number) {
     interface TitleItem {
       text: string;
       principle: string;
@@ -121,7 +121,7 @@ export class TitleSkill implements Skill {
       .filter(line => line.length > 0 && !line.startsWith("```"));
 
     return {
-      titles: lines.slice(0, params.count || this.config.defaultCount),
+      titles: lines.slice(0, count),
       details: lines.map(text => ({ text, principle: "N/A", reason: "N/A" }))
     };
   }
@@ -151,7 +151,7 @@ export class TitleSkill implements Skill {
       topic: titleParams.topic,
       audience: titleParams.audience,
       style: titleParams.style,
-      count: titleParams.count
+      count: titleParams.count!
     });
 
     // 调用 AI 服务
@@ -167,7 +167,7 @@ export class TitleSkill implements Skill {
     }
 
     // 解析响应
-    const parsed = this.parseResponse(result.data!);
+    const parsed = this.parseResponse(result.data!, titleParams.count!);
 
     return {
       success: true,

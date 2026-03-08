@@ -52,36 +52,91 @@
 |------|------|
 | `src/index.ts` | MCP Server 入口，处理请求路由 |
 | `src/shared/ai.ts` | AI API 调用实现（支持 Anthropic/OpenAI） |
+| `src/shared/config.ts` | **自动读取 API Key 配置** |
 | `src/shared/types.ts` | 统一的 TypeScript 类型定义 |
 | `src/shared/prompts.ts` | 印亚荣风格提示词模板 |
-| `src/shared/utils.ts` | 工具函数和环境变量读取 |
+| `src/shared/utils.ts` | 工具函数 |
 | `src/skills/*/schema.ts` | 各 Skill 的具体实现 |
 
-## 配置
+## 安装
 
-### 环境变量
+### 方式一：npm 全局安装（推荐）
 
 ```bash
-# .env 文件
-ANTHROPIC_API_KEY=sk-ant-xxx...    # Anthropic API Key
-AI_PROVIDER=anthropic               # 或 openai
-ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+npm install -g yinyarong-skills
 ```
 
-### Claude Desktop 配置
+安装后在 Claude Code 配置文件中添加：
 
 ```json
 {
   "mcpServers": {
     "yinyarong-skills": {
-      "command": "bash",
+      "command": "yinyarong-skills"
+    }
+  }
+}
+```
+
+### 方式二：从源码安装
+
+#### 前置要求
+
+- **Node.js**: >= 20.17.0
+- **npm**: 或其他包管理器（pnpm/yarn）
+- **Claude Code**: CLI 工具（用于使用 MCP 技能）
+
+#### 1. 克隆或下载项目
+
+```bash
+git clone https://github.com/yourusername/yinyarong-skills.git
+cd yinyarong-skills
+```
+
+#### 2. 安装依赖
+
+```bash
+npm install
+```
+
+#### 3. 编译项目
+
+```bash
+npm run build
+```
+
+编译成功后会在 `dist/` 目录生成 JavaScript 文件。
+
+#### 4. 配置 Claude Code
+
+找到 Claude Code 配置文件：
+
+- **macOS/Linux**: `~/.config/claude-code/config.json`
+- **Windows**: `%APPDATA%\claude-code\config.json`
+
+添加以下配置（**注意替换路径为你的实际路径**）：
+
+```json
+{
+  "mcpServers": {
+    "yinyarong-skills": {
+      "command": "node",
       "args": [
-        "-c",
-        "cd /path/to/yinyarong-skills && source .env && node dist/index.js"
+        "/Users/yin/Documents/yinyarong-skills/dist/index.js"
       ]
     }
   }
 }
+```
+
+> **提示**: API Key 会自动从 Claude Code 的配置中读取，无需单独设置。
+
+#### 开发模式
+
+监听模式编译（代码变更自动重新编译）：
+
+```bash
+npm run dev
 ```
 
 ## API 文档
